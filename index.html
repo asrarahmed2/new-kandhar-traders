@@ -102,7 +102,7 @@
             background-color: #fff;
             border: 1px solid #ddd;
             padding: 15px;
-            width: 200px;
+            width: 250px;
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
@@ -126,14 +126,14 @@
             font-size: 0.9em;
             color: #555;
         }
+        .product select, .product button {
+            margin-top: 10px;
+        }
         footer {
             background-color: #2874f0;
             color: #fff;
             text-align: center;
             padding: 15px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
         }
         .highlight {
             color: #2874f0;
@@ -147,11 +147,51 @@
         .contact-info p {
             margin: 5px 0;
         }
-        @media (max-width: 600px) {
-            .product-list {
-                flex-direction: column;
-                align-items: center;
-            }
+        .cart {
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        .cart h2 {
+            margin-top: 0;
+        }
+        .cart-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .cart-items li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-total {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .cart-checkout {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .cart-checkout input {
+            margin: 5px;
+            padding: 5px;
+            width: calc(100% - 12px);
+        }
+        .cart-checkout button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #2874f0;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cart-checkout button:hover {
+            background-color: #1a5bb8;
         }
     </style>
 </head>
@@ -175,7 +215,7 @@
             </li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <div class="cart-icon">🛒</div>
+        <div class="cart-icon" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</div>
     </nav>
     <div class="container">
         <section id="about">
@@ -189,26 +229,61 @@
                     <img src="asian-paints.jpg" alt="Asian Paints">
                     <h3>Asian Paints</h3>
                     <p>High-quality paints for every surface.</p>
+                    <select id="asian-paints-size">
+                        <option value="1">1 Ltr - ₹200</option>
+                        <option value="4">4 Ltr - ₹800</option>
+                        <option value="10">10 Ltr - ₹2000</option>
+                        <option value="20">20 Ltr - ₹4000</option>
+                    </select>
+                    <button onclick="addToCart('Asian Paints', 'asian-paints-size')">Add to Cart</button>
                 </div>
                 <div class="product" id="dulux">
                     <img src="dulux.jpg" alt="Dulux">
                     <h3>Dulux</h3>
                     <p>Premium paints with superior coverage.</p>
+                    <select id="dulux-size">
+                        <option value="1">1 Ltr - ₹200</option>
+                        <option value="4">4 Ltr - ₹800</option>
+                        <option value="10">10 Ltr - ₹2000</option>
+                        <option value="20">20 Ltr - ₹4000</option>
+                    </select>
+                    <button onclick="addToCart('Dulux', 'dulux-size')">Add to Cart</button>
                 </div>
                 <div class="product" id="birla-opus">
                     <img src="birla-opus.jpg" alt="Birla Opus">
                     <h3>Birla Opus</h3>
                     <p>Durable and vibrant paints for all uses.</p>
+                    <select id="birla-opus-size">
+                        <option value="1">1 Ltr - ₹200</option>
+                        <option value="4">4 Ltr - ₹800</option>
+                        <option value="10">10 Ltr - ₹2000</option>
+                        <option value="20">20 Ltr - ₹4000</option>
+                    </select>
+                    <button onclick="addToCart('Birla Opus', 'birla-opus-size')">Add to Cart</button>
                 </div>
                 <div class="product" id="pidilite">
                     <img src="pidilite.jpg" alt="Pidilite">
                     <h3>Pidilite</h3>
                     <p>Trusted for adhesives and paints.</p>
+                    <select id="pidilite-size">
+                        <option value="1">1 Ltr - ₹200</option>
+                        <option value="4">4 Ltr - ₹800</option>
+                        <option value="10">10 Ltr - ₹2000</option>
+                        <option value="20">20 Ltr - ₹4000</option>
+                    </select>
+                    <button onclick="addToCart('Pidilite', 'pidilite-size')">Add to Cart</button>
                 </div>
                 <div class="product" id="rajyog-paints">
                     <img src="rajyog-paints.jpg" alt="Rajyog Paints">
                     <h3>Rajyog Paints</h3>
                     <p>Quality paints at affordable prices.</p>
+                    <select id="rajyog-paints-size">
+                        <option value="1">1 Ltr - ₹200</option>
+                        <option value="4">4 Ltr - ₹800</option>
+                        <option value="10">10 Ltr - ₹2000</option>
+                        <option value="20">20 Ltr - ₹4000</option>
+                    </select>
+                    <button onclick="addToCart('Rajyog Paints', 'rajyog-paints-size')">Add to Cart</button>
                 </div>
             </div>
         </section>
@@ -220,9 +295,76 @@
                 <p>Address: 123 Paint Street, Color City, PA 12345</p>
             </div>
         </section>
+        <div class="cart" id="cart" style="display: none;">
+            <h2>Shopping Cart</h2>
+            <ul class="cart-items" id="cart-items"></ul>
+            <div class="cart-total" id="cart-total">Total: ₹0</div>
+            <div class="cart-checkout">
+                <input type="text" id="customer-name" placeholder="Your Name" required>
+                <input type="email" id="customer-email" placeholder="Your Email" required>
+                <input type="text" id="customer-address" placeholder="Your Address" required>
+                <button onclick="checkout()">Checkout</button>
+            </div>
+        </div>
     </div>
     <footer>
         <p>&copy; 2024 New Kandhar Traders. All rights reserved.</p>
     </footer>
+
+    <script>
+        const cart = [];
+        const prices = {
+            1: 200,
+            4: 800,
+            10: 2000,
+            20: 4000
+        };
+
+        function addToCart(product, sizeId) {
+            const sizeSelect = document.getElementById(sizeId);
+            const size = sizeSelect.value;
+            const price = prices[size];
+            cart.push({ product, size, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                const li = document.createElement('li');
+                li.textContent = `${item.product} - ${item.size} Ltr - ₹${item.price}`;
+                cartItems.appendChild(li);
+            });
+            cartTotal.textContent = `Total: ₹${total}`;
+            cartCount.textContent = cart.length;
+        }
+
+        function toggleCart() {
+            const cartElement = document.getElementById('cart');
+            if (cartElement.style.display === 'none' || cartElement.style.display === '') {
+                cartElement.style.display = 'block';
+            } else {
+                cartElement.style.display = 'none';
+            }
+        }
+
+        function checkout() {
+            const name = document.getElementById('customer-name').value;
+            const email = document.getElementById('customer-email').value;
+            const address = document.getElementById('customer-address').value;
+            if (!name || !email || !address) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            alert(`Thank you for your purchase, ${name}! We will send a confirmation to ${email}.`);
+            // Here you would typically send the cart details to a server or payment gateway.
+        }
+    </script>
 </body>
 </html>
